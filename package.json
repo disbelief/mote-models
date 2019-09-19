@@ -5,30 +5,12 @@
   "main": "index.js",
   "esnext": "index.esnext.js",
   "scripts": {
-    "test": "node_modules/.bin/jest",
+    "test": "jest",
     "build": "babel -o index.js --verbose index.esnext.js"
   },
   "author": "Michael Lawlor",
   "license": "UNLICENSED",
   "private": true,
-  "babel": {
-    "presets": [
-      [
-        "@babel/preset-env",
-        {
-          "targets": {
-            "node": "10.15"
-          }
-        }
-      ],
-      "jest"
-    ],
-    "plugins": [
-      "@babel/plugin-transform-runtime",
-      "@babel/plugin-proposal-object-rest-spread",
-      "@babel/plugin-proposal-class-properties"
-    ]
-  },
   "dependencies": {
     "camelcase": "^5.3.1",
     "immutable": "^4.0.0-rc.12",
@@ -46,6 +28,7 @@
     "@babel/runtime": "^7.6.0",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
+    "babel-loader": "^8.0.6",
     "eslint": "^6.4.0",
     "eslint-config-prettier": "^6.3.0",
     "eslint-plugin-flowtype": "^4.3.0",
@@ -53,6 +36,8 @@
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-prettier": "^3.1.1",
     "jest": "^24.9.0",
-    "prettier": "^1.18.2"
+    "prettier": "^1.18.2",
+    "webpack": "^4.40.2",
+    "webpack-cli": "^3.3.9"
   }
 }
