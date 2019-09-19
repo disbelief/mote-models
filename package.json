@@ -6,7 +6,7 @@
   "esnext": "index.esnext.js",
   "scripts": {
     "test": "jest",
-    "build": "babel -o index.js --verbose index.esnext.js"
+    "build": "webpack --config webpack.config.js"
   },
   "author": "Michael Lawlor",
   "license": "UNLICENSED",
