@@ -22,7 +22,9 @@ const Model = (attributes, modelName = 'Model') => {
     attributesMap[attribute.name] = attribute;
   });
 
-  const getAttribute = name => attributesMap[camelcase(name)];
+  const normalizeName = name => camelcase(name);
+
+  const getAttribute = name => attributesMap[normalizeName(name)];
 
   const prepareAttributeValue = (attribName, value, defaultIfNull = false) => {
     const attribute = getAttribute(attribName);
@@ -38,7 +40,7 @@ const Model = (attributes, modelName = 'Model') => {
       const preparedProps = Object.keys(props).reduce(
         (result, propName) => ({
           ...result,
-          [camelcase(propName)]: prepareAttributeValue(propName, props[propName], true)
+          [normalizeName(propName)]: prepareAttributeValue(propName, props[propName], true)
         }),
         {}
       );
@@ -59,28 +61,36 @@ const Model = (attributes, modelName = 'Model') => {
       const props = Object.keys(row).reduce(
         (attribs, col) => ({
           ...attribs,
-          [camelcase(col)]: row[col]
+          [normalizeName(col)]: row[col]
         }),
         {}
       );
-      console.log('fromMysql props: ', JSON.stringify(props));
       return new this(props);
     }
 
-    set(attribName, value) {
-      console.log('set', attribName, value);
-      const preparedValue = prepareAttributeValue(attribName, value);
-      console.log('set result:', preparedValue);
-      return super.set(camelcase(attribName), preparedValue);
+    set(attribName, rawValue) {
+      const normalizedName = normalizeName(attribName);
+      const preparedValue = prepareAttributeValue(normalizedName, rawValue);
+      return super.set(normalizedName, preparedValue);
+    }
+
+    setRaw(attribName, rawValue) {
+      return super.set(normalizeName(attribName), rawValue);
     }
 
     get(attribName) {
-      const attribute = getAttribute(camelcase(attribName));
-      const rawValue = super.get(camelcase(attribName));
+      const attribute = getAttribute(normalizeName(attribName));
+      const rawValue = super.get(attribute.name);
       if (attribute.isEnum()) {
         return attribute.members[rawValue];
       }
       return rawValue;
+    }
+
+    // makes no attempt to transform the output that is stored
+    // (eg. by dereferencing from an enum)
+    getRaw(attribName) {
+      return super.get(normalizeName(attribName));
     }
 
     isValid() {

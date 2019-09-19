@@ -25,14 +25,19 @@ export const attributes = [
     isRequired: true,
     defaultValue: () => generateUuid()
   }),
-  Attribute.enum({ name: 'status', members: STATUS_ENUM, defaultValue: STATUS_PENDING })
+  Attribute.enum({ name: 'status', members: STATUS_ENUM, defaultValue: STATUS_PENDING }),
+  Attribute.string({ name: 'challengeName', isRequired: false })
 ];
 
 export default class User extends Model(attributes, 'User') {
   static STATUS_DELETED = 'deleted';
+
   static STATUS_PENDING = 'pending';
+
   static STATUS_VERIFIED = 'verified';
+
   static STATUS_CONFIRMED = 'confirmed';
+
   static STATUSES = {
     [STATUS_DELETED]: 0,
     [STATUS_PENDING]: 1,
@@ -57,5 +62,29 @@ export default class User extends Model(attributes, 'User') {
       email: normalizeEmail(email),
       name
     };
+  }
+
+  static attribsFromCognitoUser(cognitoUser) {
+    const { username: email, attributes, challengeName } = cognitoUser;
+    // TODO any other built-in attribs we want to use eg. email_verified (bool)?
+    let cognitoId;
+    let status;
+    if (attributes) {
+      cognitoId = attributes.sub;
+      status = attributes.status;
+      // TODO: any other custom or cognito attribs we want to include?
+    }
+
+    return {
+      cognitoId,
+      email,
+      status,
+      challengeName
+    };
+  }
+
+  static attribsFromCognitoSignup(signupResult) {
+    const { user: cognitoUser, userSub: cognitoId } = signupResult;
+    return User.attribsFromCognitoUser({ ...cognitoUser, cognitoId });
   }
 }
