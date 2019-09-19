@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "Simple immutable data model library",
   "main": "index.js",
+  "esnext": "index.esnext.js",
   "scripts": {
-    "test": "node_modules/.bin/jest"
+    "test": "node_modules/.bin/jest",
+    "build": "babel -o index.js --verbose index.esnext.js"
   },
   "author": "Michael Lawlor",
   "license": "UNLICENSED",
