@@ -29,6 +29,17 @@ export const attributes = [
 ];
 
 export default class User extends Model(attributes, 'User') {
+  static STATUS_DELETED = 'deleted';
+  static STATUS_PENDING = 'pending';
+  static STATUS_VERIFIED = 'verified';
+  static STATUS_CONFIRMED = 'confirmed';
+  static STATUSES = {
+    [STATUS_DELETED]: 0,
+    [STATUS_PENDING]: 1,
+    [STATUS_VERIFIED]: 2,
+    [STATUS_CONFIRMED]: 3
+  };
+
   static generateUuid() {
     return generateUuid();
   }
