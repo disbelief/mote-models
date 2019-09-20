@@ -2,7 +2,7 @@
   "name": "mote-models",
   "version": "1.0.0",
   "description": "Simple immutable data model library",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "esnext": "index.esnext.js",
   "scripts": {
     "test": "jest",
@@ -29,6 +29,7 @@
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
+    "babel-plugin-add-module-exports": "^1.0.2",
     "eslint": "^6.4.0",
     "eslint-config-prettier": "^6.3.0",
     "eslint-plugin-flowtype": "^4.3.0",
