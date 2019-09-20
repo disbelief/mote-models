@@ -2,8 +2,8 @@
   "name": "mote-models",
   "version": "1.0.0",
   "description": "Simple immutable data model library",
-  "main": "./dist/index.js",
-  "esnext": "index.esnext.js",
+  "main": "./dist/mote-models.js",
+  "esnext": "./index.js",
   "scripts": {
     "test": "jest",
     "build": "webpack --config webpack.config.js"
