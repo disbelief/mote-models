@@ -13,7 +13,7 @@ module.exports = {
   mode: 'production',
   target: 'node',
   optimization: {
-    minimize: false
+    minimize: true
   },
   performance: {
     hints: 'warning'

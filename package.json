@@ -14,10 +14,12 @@
   "dependencies": {
     "camelcase": "^5.3.1",
     "immutable": "^4.0.0-rc.12",
-    "lodash": "^4.17.15",
     "tiny-invariant": "^1.0.6",
     "uuid": "^3.3.3",
     "validator": "^11.1.0"
+  },
+  "peerDependencies": {
+    "lodash": "^4.17.x"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.0",
