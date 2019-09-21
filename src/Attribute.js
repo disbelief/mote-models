@@ -1,5 +1,6 @@
 import invariant from 'tiny-invariant';
 import { isFunction, isNumber, isInteger, isString, isBoolean, isDate } from 'lodash/lang';
+import { findKey } from 'lodash/object';
 
 export const TYPE_BOOLEAN = 'boolean';
 export const TYPE_INTEGER = 'integer';
@@ -41,7 +42,12 @@ export default class Attribute {
     return isFunction(this.defaultValue) ? this.defaultValue() : this.defaultValue;
   }
 
+  // converts a value to its internal representation
+  // (eg. converts a string enum key to its integer value)
   prepareValue(rawValue) {
+    if (rawValue === null || typeof rawValue === 'undefined') {
+      return rawValue;
+    }
     if (this.type === TYPE_ENUM && !isInteger(rawValue)) {
       const intValue = this.members[rawValue];
       invariant(
@@ -55,11 +61,20 @@ export default class Attribute {
     return rawValue;
   }
 
+  // converts an internal value to its external representation
+  // (eg. converts an integer enum value to its string key)
+  unprepareValue(value) {
+    if (value !== null && typeof value !== 'undefined' && this.isEnum()) {
+      return findKey(this.members, v => v === value);
+    }
+    return value;
+  }
+
   isValid(value) {
     if ((this.isRequired && value === null) || typeof value === 'undefined') {
       return false;
     }
-    if (value) {
+    if (value !== null && typeof value !== 'undefined') {
       switch (this.type) {
         case TYPE_BOOLEAN:
           return isBoolean(value);
@@ -73,9 +88,9 @@ export default class Attribute {
           return isDate(value);
         case TYPE_ENUM:
           if (isString(value)) {
-            return !!this.members[value];
+            return Object.prototype.hasOwnProperty.call(this.members, value);
           }
-          return !!Object.keys(this.members).find(k => this.members[k] === value);
+          return !!findKey(this.members, v => v === value);
         default:
           return false;
       }

@@ -2,6 +2,7 @@ import { Record } from 'immutable';
 import invariant from 'tiny-invariant';
 import camelcase from 'camelcase';
 import { isFunction } from 'lodash/lang';
+import { findKey } from 'lodash/object';
 import Attribute from './Attribute';
 
 export const defaultAttributes = [
@@ -29,7 +30,7 @@ const Model = (attributes, modelName = 'Model') => {
   const prepareAttributeValue = (attribName, value, defaultIfNull = false) => {
     const attribute = getAttribute(attribName);
     invariant(!!attribute, `There is no ${attribName} attribute on the ${modelName} model`);
-    if (defaultIfNull && value === null && isFunction(attribute.defaultValue)) {
+    if (defaultIfNull && (value === null || typeof value === 'undefined') && isFunction(attribute.defaultValue)) {
       return attribute.prepareValue(attribute.defaultValue.apply(this));
     }
     return attribute.prepareValue(value);
@@ -46,7 +47,7 @@ const Model = (attributes, modelName = 'Model') => {
       );
       // ensure we respect defaultValues for any attribute not specified in constructor
       Object.keys(recordProps).forEach(propName => {
-        if (!preparedProps[propName]) {
+        if (preparedProps[propName] === null || typeof preparedProps[propName] === 'undefined') {
           preparedProps[propName] = prepareAttributeValue(propName, recordProps[propName], true);
         }
       });
@@ -81,16 +82,22 @@ const Model = (attributes, modelName = 'Model') => {
     get(attribName) {
       const attribute = getAttribute(normalizeName(attribName));
       const rawValue = super.get(attribute.name);
-      if (attribute.isEnum()) {
-        return attribute.members[rawValue];
-      }
-      return rawValue;
+      return attribute.unprepareValue(rawValue);
     }
 
     // makes no attempt to transform the output that is stored
     // (eg. by dereferencing from an enum)
     getRaw(attribName) {
       return super.get(normalizeName(attribName));
+    }
+
+    // returns all attributes of the model as a POJO
+    // @param {Boolean} rawValues flag indicates whether to skip preparing values
+    toObject(rawValues = false) {
+      return Object.keys(attributesMap).reduce((obj, key) => ({
+        ...obj,
+        [key]: (rawValues ? this.getRaw(key) : this.get(key))
+      }), {});
     }
 
     isValid() {
