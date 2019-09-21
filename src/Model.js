@@ -91,13 +91,31 @@ const Model = (attributes, modelName = 'Model') => {
       return super.get(normalizeName(attribName));
     }
 
-    // returns all attributes of the model as a POJO
-    // @param {Boolean} rawValues flag indicates whether to skip preparing values
-    toObject(rawValues = false) {
-      return Object.keys(attributesMap).reduce((obj, key) => ({
-        ...obj,
-        [key]: (rawValues ? this.getRaw(key) : this.get(key))
-      }), {});
+    /**
+     * Returns all attributes of the model as a POJO
+     * 
+     * @param {Boolean} rawValues flag indicates whether to skip preparing values
+     * @param {Boolean} setOnly flag indicates whether to omit null/undefined
+     * keys + values from the result.
+     */
+    toObject({ rawValues = false, setOnly = false } = {}) {
+      return Object.keys(attributesMap).reduce((obj, key) => {
+        const value = rawValues ? this.getRaw(key) : this.get(key);
+        if (setOnly) {
+          if (value !== null && typeof value !== 'undefined') {
+            return {
+              ...obj,
+              [key]: value
+            };
+          } else {
+            return obj;
+          }
+        }
+        return {
+          ...obj,
+          [key]: value
+        };
+      }, {});
     }
 
     isValid() {

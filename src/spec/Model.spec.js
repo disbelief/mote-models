@@ -128,13 +128,34 @@ describe('Model', () => {
 
     describe('when rawValue flag is set', () => {
       it('returns a plain javascript object with non-prepared attribute values', () => {
-        const result = instance.toObject(true);
-        console.log('instanceValues', instanceValues);
-        console.log('result', result);
+        const result = instance.toObject({ rawValues: true });
         expect(result['status']).not.toBe(instance.get('status'));
         expect(result['status']).toBe(instanceValues.status);
+        Object.keys(instanceValues).forEach(k => {
+          expect(result[k]).toBe(instanceValues[k]);
+        });
       });
     });
+
+    describe('when setOnly flag is set', () => {
+      beforeEach(() => {
+        instance = instance.set('id', null);
+        instance = instance.set('name', null);
+      });
+
+      it('returns only key value pairs for attributes that are set to something', () => {
+        const result = instance.toObject({ setOnly: true });
+        expect(Object.keys(result)).not.toContain('id');
+        expect(Object.keys(result)).not.toContain('name');
+        Object.keys(instanceValues).forEach(k => {
+          if (instance.get(k) !== null) {
+            expect(result[k]).toBe(instance.get(k));
+          } else {
+            expect(Object.keys(result)).not.toContain(k);
+          }
+        });
+      });
+    })
   });
 
   describe('isValid', () => {
