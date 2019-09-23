@@ -4,12 +4,13 @@ import Model, { defaultAttributes } from '../Model';
 import Attribute from '../Attribute';
 
 describe('Model', () => {
+  let statuses = { pending: 0, active: 1, disabled: 2 };
   let modelAttribs = [
     Attribute.string({ name: 'name', isRequired: true }),
     Attribute.boolean({ name: 'verified', defaultValue: false }),
     Attribute.string({ name: 'lorem', defaultValue: 'default ipsum' }),
     Attribute.string({ name: 'uuid', defaultValue: () => uuidv4() }),
-    Attribute.enum({ name: 'status', isRequired: true, members: { 'pending': 0, 'active': 1, 'disabled': 2 }})
+    Attribute.enum({ name: 'status', defaultValue: 0, isRequired: true, members: statuses })
   ];
   let ModelClass;
   let instanceValues = {
@@ -88,6 +89,40 @@ describe('Model', () => {
     });
   });
 
+  describe('isModel', () => {
+    it('returns true when the argument is an instance of any model class', () => {
+      instance = new ModelClass(instanceValues);
+      class OtherModel extends Model(modelAttribs, 'OtherModel') {}
+      const otherInstance = new OtherModel(instanceValues);
+      expect(ModelClass.isModel(instance)).toBeTruthy();
+      expect(ModelClass.isModel(otherInstance)).toBeTruthy();
+    });
+
+    it('returns false when the argument is not instance of any model class', () => {
+      expect(ModelClass.isModel({})).toBeFalsy();
+      expect(ModelClass.isModel(new Date())).toBeFalsy();
+      expect(ModelClass.isModel('blah')).toBeFalsy();
+      expect(ModelClass.isModel(1234567)).toBeFalsy();
+    });
+  });
+
+  describe('isInstance', () => {
+    it('returns true when the argument is an instance of the model class', () => {
+      instance = new ModelClass(instanceValues);
+      expect(ModelClass.isInstance(instance)).toBeTruthy();
+    });
+
+    it('returns false when the argument is not a model instance', () => {
+      expect(ModelClass.isInstance({ id: 1 })).toBeFalsy();
+    });
+
+    it('returns false when the argument is an instance of a different model', () => {
+      class OtherModel extends Model(modelAttribs, 'OtherModel') {}
+      const otherInstance = new OtherModel(instanceValues);
+      expect(ModelClass.isInstance(otherInstance)).toBeFalsy();
+    });
+  });
+
   describe('get', () => {
     beforeEach(() => {
       instance = new ModelClass(instanceValues);
@@ -155,7 +190,7 @@ describe('Model', () => {
           }
         });
       });
-    })
+    });
   });
 
   describe('isValid', () => {

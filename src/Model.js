@@ -58,6 +58,17 @@ const Model = (attributes, modelName = 'Model') => {
 
     static attributes = attributesMap;
 
+    static isModel(maybeModel) {
+      return Record.isRecord(maybeModel);
+    }
+
+    static isInstance(maybeModel) {
+      return (
+        Record.isRecord(maybeModel) &&
+        Record.getDescriptiveName(maybeModel) === modelName
+      );
+    }
+
     static fromMysql(row) {
       const props = Object.keys(row).reduce(
         (attribs, col) => ({
