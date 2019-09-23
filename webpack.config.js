@@ -10,10 +10,11 @@ module.exports = {
     // libraryExport: 'default',
     library: 'mote-models'
   },
-  mode: 'production',
+  //mode: 'production',
+  mode: 'development',
   target: 'node',
   optimization: {
-    minimize: true
+    minimize: false
   },
   performance: {
     hints: 'warning'

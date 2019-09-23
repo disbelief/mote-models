@@ -30,8 +30,12 @@ const Model = (attributes, modelName = 'Model') => {
   const prepareAttributeValue = (attribName, value, defaultIfNull = false) => {
     const attribute = getAttribute(attribName);
     invariant(!!attribute, `There is no ${attribName} attribute on the ${modelName} model`);
-    if (defaultIfNull && (value === null || typeof value === 'undefined') && isFunction(attribute.defaultValue)) {
-      return attribute.prepareValue(attribute.defaultValue.apply(this));
+    if (
+      defaultIfNull &&
+      (value === null || typeof value === 'undefined') &&
+      isFunction(attribute.defaultValue)
+    ) {
+      return attribute.prepareValue(attribute.defaultValue());
     }
     return attribute.prepareValue(value);
   };
@@ -63,10 +67,7 @@ const Model = (attributes, modelName = 'Model') => {
     }
 
     static isInstance(maybeModel) {
-      return (
-        Record.isRecord(maybeModel) &&
-        Record.getDescriptiveName(maybeModel) === modelName
-      );
+      return Record.isRecord(maybeModel) && Record.getDescriptiveName(maybeModel) === modelName;
     }
 
     static fromMysql(row) {
@@ -104,7 +105,7 @@ const Model = (attributes, modelName = 'Model') => {
 
     /**
      * Returns all attributes of the model as a POJO
-     * 
+     *
      * @param {Boolean} rawValues flag indicates whether to skip preparing values
      * @param {Boolean} setOnly flag indicates whether to omit null/undefined
      * keys + values from the result.
