@@ -42,13 +42,16 @@ const Model = (attributes, modelName = 'Model') => {
 
   return class extends Record(recordProps, modelName) {
     constructor(props) {
-      const preparedProps = Object.keys(props).reduce(
-        (result, propName) => ({
-          ...result,
-          [normalizeName(propName)]: prepareAttributeValue(propName, props[propName], true)
-        }),
-        {}
-      );
+      const preparedProps = Object.keys(props).reduce((result, propName) => {
+        // ignore props that don't match any defined attribute
+        if (getAttribute(propName)) {
+          return {
+            ...result,
+            [normalizeName(propName)]: prepareAttributeValue(propName, props[propName], true)
+          };
+        }
+        return result;
+      }, {});
       // ensure we respect defaultValues for any attribute not specified in constructor
       Object.keys(recordProps).forEach(propName => {
         if (preparedProps[propName] === null || typeof preparedProps[propName] === 'undefined') {

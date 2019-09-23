@@ -66,6 +66,14 @@ describe('Model', () => {
         expect(instance.get(attrib)).toBe(expectedValue);
       });
     });
+
+    it('should ignore any props that are not defined attributes', () => {
+      expect(() => {
+        instance = new ModelClass({ ...instanceValues, invalidAttributeName: 1234 });
+      }).not.toThrow();
+      expect(instance).toBeDefined();
+      expect(instance.invalidAttributeName).not.toBeDefined();
+    });
   });
 
   describe('fromMysql', () => {
