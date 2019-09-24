@@ -49,7 +49,7 @@ export default class User extends Model(attributes, 'User') {
     return generateUuid();
   }
 
-  static attribsFromCognitoEvent(cognitoEvent) {
+  static attribsFromCognitoEvent(cognitoEvent, overrides = {}) {
     const {
       userName,
       record: {
@@ -60,11 +60,12 @@ export default class User extends Model(attributes, 'User') {
       cognitoId: sub || userName,
       rawEmail: email,
       email: normalizeEmail(email),
-      name
+      name,
+      ...overrides
     };
   }
 
-  static attribsFromCognitoUser(cognitoUser) {
+  static attribsFromCognitoUser(cognitoUser, overrides = {}) {
     const { username: email, attributes, challengeName } = cognitoUser;
     // TODO any other built-in attribs we want to use eg. email_verified (bool)?
     let cognitoId;
@@ -79,12 +80,13 @@ export default class User extends Model(attributes, 'User') {
       cognitoId,
       email,
       status,
-      challengeName
+      challengeName,
+      ...overrides
     };
   }
 
-  static attribsFromCognitoSignup(signupResult) {
+  static attribsFromCognitoSignup(signupResult, overrides = {}) {
     const { user: cognitoUser, userSub: cognitoId } = signupResult;
-    return User.attribsFromCognitoUser({ ...cognitoUser, cognitoId });
+    return User.attribsFromCognitoUser({ ...cognitoUser, cognitoId }, overrides);
   }
 }
