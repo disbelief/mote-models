@@ -72,8 +72,7 @@ export default class User extends Model(attributes, 'User') {
     let status;
     if (attributes) {
       cognitoId = attributes.sub;
-      status = attributes.status;
-      // TODO: any other custom or cognito attribs we want to include?
+      status = attributes['custom:statusName'];
     }
 
     return {
@@ -87,6 +86,6 @@ export default class User extends Model(attributes, 'User') {
 
   static attribsFromCognitoSignup(signupResult, overrides = {}) {
     const { user: cognitoUser, userSub: cognitoId } = signupResult;
-    return User.attribsFromCognitoUser({ ...cognitoUser, cognitoId }, overrides);
+    return User.attribsFromCognitoUser(cognitoUser, { cognitoId, ...overrides });
   }
 }

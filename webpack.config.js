@@ -7,11 +7,10 @@ module.exports = {
     filename: 'mote-models.js',
     libraryTarget: 'umd',
     globalObject: 'this',
-    // libraryExport: 'default',
+    libraryExport: 'default',
     library: 'mote-models'
   },
-  //mode: 'production',
-  mode: 'development',
+  mode: 'production',
   target: 'node',
   optimization: {
     minimize: false

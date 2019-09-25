@@ -96,6 +96,7 @@ const Model = (attributes, modelName = 'Model') => {
 
     get(attribName) {
       const attribute = getAttribute(normalizeName(attribName));
+      invariant(!!attribute, `There is no ${attribName} attribute on the ${modelName} model`);
       const rawValue = super.get(attribute.name);
       return attribute.unprepareValue(rawValue);
     }
