@@ -3,10 +3,10 @@ import normalizeEmail from 'validator/lib/normalizeEmail';
 import Attribute from './Attribute';
 import Model from './Model';
 
-export const STATUS_DELETED = 'deleted';
-export const STATUS_PENDING = 'pending';
-export const STATUS_VERIFIED = 'verified';
-export const STATUS_CONFIRMED = 'confirmed';
+export const STATUS_DELETED = 'DELETED';
+export const STATUS_PENDING = 'PENDING';
+export const STATUS_VERIFIED = 'VERIFIED';
+export const STATUS_CONFIRMED = 'CONFIRMED';
 export const STATUS_ENUM = {
   [STATUS_DELETED]: 0,
   [STATUS_PENDING]: 1,
@@ -30,13 +30,13 @@ export const attributes = [
 ];
 
 export default class User extends Model(attributes, 'User') {
-  static STATUS_DELETED = 'DELETED';
+  static STATUS_DELETED = STATUS_DELETED;
 
-  static STATUS_PENDING = 'PENDING';
+  static STATUS_PENDING = STATUS_PENDING;
 
-  static STATUS_VERIFIED = 'VERIFIED';
+  static STATUS_VERIFIED = STATUS_VERIFIED;
 
-  static STATUS_CONFIRMED = 'CONFIRMED';
+  static STATUS_CONFIRMED = STATUS_CONFIRMED;
 
   static STATUSES = {
     [STATUS_DELETED]: 0,
