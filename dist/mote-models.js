@@ -16890,10 +16890,10 @@ function User_objectSpread(target) { for (var i = 1; i < arguments.length; i++) 
 
 
 
-const STATUS_DELETED = 'deleted';
-const STATUS_PENDING = 'pending';
-const STATUS_VERIFIED = 'verified';
-const STATUS_CONFIRMED = 'confirmed';
+const STATUS_DELETED = 'DELETED';
+const STATUS_PENDING = 'PENDING';
+const STATUS_VERIFIED = 'VERIFIED';
+const STATUS_CONFIRMED = 'CONFIRMED';
 const STATUS_ENUM = {
   [STATUS_DELETED]: 0,
   [STATUS_PENDING]: 1,
@@ -16983,13 +16983,13 @@ class User_User extends src_Model(User_attributes, 'User') {
 
 }
 
-defineProperty_default()(User_User, "STATUS_DELETED", 'DELETED');
+defineProperty_default()(User_User, "STATUS_DELETED", STATUS_DELETED);
 
-defineProperty_default()(User_User, "STATUS_PENDING", 'PENDING');
+defineProperty_default()(User_User, "STATUS_PENDING", STATUS_PENDING);
 
-defineProperty_default()(User_User, "STATUS_VERIFIED", 'VERIFIED');
+defineProperty_default()(User_User, "STATUS_VERIFIED", STATUS_VERIFIED);
 
-defineProperty_default()(User_User, "STATUS_CONFIRMED", 'CONFIRMED');
+defineProperty_default()(User_User, "STATUS_CONFIRMED", STATUS_CONFIRMED);
 
 defineProperty_default()(User_User, "STATUSES", {
   [STATUS_DELETED]: 0,
