@@ -16983,13 +16983,13 @@ class User_User extends src_Model(User_attributes, 'User') {
 
 }
 
-defineProperty_default()(User_User, "STATUS_DELETED", 'deleted');
+defineProperty_default()(User_User, "STATUS_DELETED", 'DELETED');
 
-defineProperty_default()(User_User, "STATUS_PENDING", 'pending');
+defineProperty_default()(User_User, "STATUS_PENDING", 'PENDING');
 
-defineProperty_default()(User_User, "STATUS_VERIFIED", 'verified');
+defineProperty_default()(User_User, "STATUS_VERIFIED", 'VERIFIED');
 
-defineProperty_default()(User_User, "STATUS_CONFIRMED", 'confirmed');
+defineProperty_default()(User_User, "STATUS_CONFIRMED", 'CONFIRMED');
 
 defineProperty_default()(User_User, "STATUSES", {
   [STATUS_DELETED]: 0,

@@ -30,13 +30,13 @@ export const attributes = [
 ];
 
 export default class User extends Model(attributes, 'User') {
-  static STATUS_DELETED = 'deleted';
+  static STATUS_DELETED = 'DELETED';
 
-  static STATUS_PENDING = 'pending';
+  static STATUS_PENDING = 'PENDING';
 
-  static STATUS_VERIFIED = 'verified';
+  static STATUS_VERIFIED = 'VERIFIED';
 
-  static STATUS_CONFIRMED = 'confirmed';
+  static STATUS_CONFIRMED = 'CONFIRMED';
 
   static STATUSES = {
     [STATUS_DELETED]: 0,
