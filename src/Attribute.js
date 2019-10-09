@@ -1,6 +1,6 @@
-import invariant from 'tiny-invariant';
 import { isFunction, isNumber, isInteger, isString, isBoolean, isDate } from 'lodash/lang';
 import { findKey } from 'lodash/object';
+import invariant from './util/invariant';
 
 export const TYPE_BOOLEAN = 'boolean';
 export const TYPE_INTEGER = 'integer';
@@ -49,7 +49,7 @@ export default class Attribute {
       return rawValue;
     }
     if (this.type === TYPE_ENUM && !isInteger(rawValue)) {
-      const intValue = this.members[rawValue];
+      const intValue = this.members[rawValue.toUpperCase()];
       invariant(
         typeof intValue !== 'undefined',
         `Value ${rawValue} is not a member of the ${this.name} enum`

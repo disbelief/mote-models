@@ -1,9 +1,8 @@
 import { Record } from 'immutable';
-import invariant from 'tiny-invariant';
 import camelcase from 'camelcase';
 import { isFunction } from 'lodash/lang';
-import { findKey } from 'lodash/object';
 import Attribute from './Attribute';
+import invariant from './util/invariant';
 
 export const defaultAttributes = [
   Attribute.integer({ name: 'id' }), // TODO isRequired only for persisted records

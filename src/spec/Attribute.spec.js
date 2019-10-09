@@ -70,7 +70,7 @@ describe('Attribute', () => {
         const attribute = Attribute.enum({
           name: attributeName,
           isRequired: true,
-          members: { zero: 0, one: 1 }
+          members: { ZERO: 0, ONE: 1 }
         });
         expect(attribute.type).toBe(TYPES.enum);
         expect(attribute.name).toBe(attributeName);
@@ -83,15 +83,15 @@ describe('Attribute', () => {
     let attribute;
 
     describe('with enum attribute', () => {
-      const members = { zero: 0, one: 1 };
+      const members = { ZERO: 0, ONE: 1 };
 
       beforeEach(() => {
         attribute = Attribute.enum({ name: 'someAttribute', members });
       });
 
       it('converts a string to underlying enum value', () => {
-        expect(attribute.prepareValue('one')).toBe(members.one);
-        expect(attribute.prepareValue('zero')).toBe(members.zero);
+        expect(attribute.prepareValue('ONE')).toBe(members.ONE);
+        expect(attribute.prepareValue('ZERO')).toBe(members.ZERO);
       });
 
       it('throws an error if string does not map to enum value', () => {
@@ -130,7 +130,7 @@ describe('Attribute', () => {
     });
 
     describe('enum', () => {
-      let members = { zero: 0, one: 1 };
+      let members = { ZERO: 0, ONE: 1 };
 
       beforeEach(() => {
         attribute = Attribute.enum({ name: 'something', members });
@@ -141,11 +141,11 @@ describe('Attribute', () => {
       });
 
       it('returns true when value is a member of the enum values', () => {
-        expect(attribute.isValid(members.one)).toBeTruthy();
+        expect(attribute.isValid(members.ONE)).toBeTruthy();
       });
 
       it('returns true when value is a member of the enum keys', () => {
-        expect(attribute.isValid('one')).toBeTruthy();
+        expect(attribute.isValid('ONE')).toBeTruthy();
       });
     });
 
